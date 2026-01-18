@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Jewellery Rate Board Editor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="./images/logo.jpeg" type="image/x-icon">
+<!-- html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#0f172a;
+  font-family:Segoe UI,Arial;
+  padding:20px;
+  color:white;
+}
+
+/* buttons */
+.controls{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.btn{
+  padding:10px 18px;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+}
+.edit{background:#2563eb;color:#fff}
+.jpg{background:#16a34a;color:#fff}
+.png{background:#ea580c;color:#fff}
+
+/* board */
+.board-wrapper{
+  background:linear-gradient(#fbbf24,#ca8a04);
+  padding:16px;
+  border-radius:20px;
+  max-width:1100px;
+  margin:auto;
+}
+.board{
+  background:linear-gradient(#172554,#1e3a8a);
+  border-radius:14px;
+  padding:30px;
+}
+
+/* editable */
+.editable{
+  outline:none;
+  cursor:text;
+}
+.editing{
+  background:#1e3a8a;
+  border:2px dashed #fbbf24;
+  border-radius:6px;
+}
+
+/* header */
+.tagline{
+  text-align:center;
+  letter-spacing:4px;
+  margin-bottom:15px;
+  font-size:18px;
+}
+.shop{
+  background:#1e40af;
+  border:4px solid #2563eb;
+  padding:18px;
+  text-align:center;
+  border-radius:10px;
+}
+.shop h1{
+  font-size:40px;
+  letter-spacing:3px;
+}
+.shop p{opacity:.9;margin-top:6px}
+
+.title{
+  text-align:center;
+  margin:20px 0;
+}
+.date{
+  font-size:20px;
+  font-weight:bold;
+}
+
+/* table */
+.table{
+  border-radius:10px;
+  overflow:hidden;
+}
+.thead{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  background:#fbbf24;
+  color:black;
+  font-weight:bold;
+}
+.th,.td{
+  padding:16px;
+  text-align:center;
+}
+.th{
+  border-right:2px solid #eab308;
+}
+.td{
+  border-right:2px solid #1e40af;
+}
+.row{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  border-top:2px solid #1e40af;
+}
+.td{
+ background:#172554;
+}
+.td:nth-child(2){
+  /* background:#1e3a8a; */
+      background: linear-gradient(to right, #172554, #1e3a8a);
+}
+.td:nth-child(3){
+  /* background:#1e40af; */
+      background: linear-gradient(to right, #1e3a8a, #172554);
+}
+.metal{
+  font-weight:bold;
+  font-size:18px;
+}
+.sub{
+  font-size:14px;
+  opacity:.85;
+}
+.rate{
+  font-size:28px;
+  font-weight:bold;
+}
+
+/* modal */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  justify-content:center;
+  align-items:center;
+}
+.modal img{
+  max-width:90%;
+  border-radius:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="controls">
+  <button class="btn edit" onclick="toggleEdit()">✏️ Edit / Save</button>
+  <button class="btn jpg" onclick="download('jpg')">⬇ JPG</button>
+  <button class="btn png" onclick="download('png')">⬇ PNG</button>
+</div>
+
+<div class="board-wrapper" id="board">
+  <div class="board">
+
+    <div class="tagline editable" contenteditable="false">
+      🌿 FAMILY RUN SINCE 2026 🌿
+    </div>
+
+    <div class="shop">
+      <h1 class="editable" contenteditable="false">
+        NEW TAJ JEWELLERY
+      </h1>
+      <p>PVT. LTD.</p>
+    </div>
+
+    <div class="title">
+      <div class="editable" contenteditable="false">
+        22ct, 18ct, 24ct Hallmark Gold / Silver Rate
+      </div>
+      <div class="date">
+        Date:- <span class="editable" contenteditable="false">15/12/2025</span>
+      </div>
+    </div>
+
+    <div class="table">
+      <div class="thead">
+        <div class="th">Metal Purity</div>
+        <div class="th">Newspaper Rate</div>
+        <div class="th">Our Rate</div>
+      </div>
+
+      <!-- ROW 1 -->
+      <div class="row">
+        <div class="td">
+          <div class="metal editable" contenteditable="false">22 ct HALLMARK GOLD (916)</div>
+          <div class="sub editable" contenteditable="false">[10 Grams]</div>
+        </div>
+        <div class="td rate editable" contenteditable="false">1,32,000</div>
+        <div class="td rate editable" contenteditable="false">1,28,500</div>
+      </div>
+
+      <!-- ROW 2 -->
+      <div class="row">
+        <div class="td">
+          <div class="metal editable" contenteditable="false">18 ct HALLMARK GOLD RATE</div>
+          <div class="sub editable" contenteditable="false">[10 Grams]</div>
+        </div>
+        <div class="td rate editable" contenteditable="false">1,08,000</div>
+        <div class="td rate editable" contenteditable="false">1,04,900</div>
+      </div>
+
+      <!-- ROW 3 -->
+      <div class="row">
+        <div class="td">
+          <div class="metal editable" contenteditable="false">24 KT GOLD RATE</div>
+          <div class="sub editable" contenteditable="false">[10 Grams]</div>
+        </div>
+        <div class="td rate editable" contenteditable="false">1,45,000</div>
+        <div class="td rate editable" contenteditable="false">1,45,000</div>
+      </div>
+
+      <!-- ROW 4 -->
+      <div class="row">
+        <div class="td">
+          <div class="metal editable" contenteditable="false">SILVER RATE</div>
+          <div class="sub editable" contenteditable="false">[1 Gram]</div>
+        </div>
+        <div class="td rate editable" contenteditable="false">230.00</div>
+        <div class="td rate editable" contenteditable="false">225.00</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="./js/index.js"></script>
+</body>
+</html>
